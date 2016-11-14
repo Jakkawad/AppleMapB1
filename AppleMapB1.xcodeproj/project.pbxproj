@@ -13,6 +13,7 @@
 		31A2D7E61DD8C91900F9394D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 31A2D7E51DD8C91900F9394D /* Assets.xcassets */; };
 		31A2D7E91DD8C91900F9394D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31A2D7E71DD8C91900F9394D /* LaunchScreen.storyboard */; };
 		31A2D7F41DD8C91A00F9394D /* AppleMapB1Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A2D7F31DD8C91A00F9394D /* AppleMapB1Tests.swift */; };
+		31A2D8011DD8CCE800F9394D /* LocationSearchTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A2D8001DD8CCE800F9394D /* LocationSearchTable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +37,7 @@
 		31A2D7EF1DD8C91A00F9394D /* AppleMapB1Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppleMapB1Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		31A2D7F31DD8C91A00F9394D /* AppleMapB1Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleMapB1Tests.swift; sourceTree = "<group>"; };
 		31A2D7F51DD8C91A00F9394D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		31A2D8001DD8CCE800F9394D /* LocationSearchTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationSearchTable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 			children = (
 				31A2D7DE1DD8C91900F9394D /* AppDelegate.swift */,
 				31A2D7E01DD8C91900F9394D /* ViewController.swift */,
+				31A2D8001DD8CCE800F9394D /* LocationSearchTable.swift */,
 				31A2D7E21DD8C91900F9394D /* Main.storyboard */,
 				31A2D7E51DD8C91900F9394D /* Assets.xcassets */,
 				31A2D7E71DD8C91900F9394D /* LaunchScreen.storyboard */,
@@ -146,6 +149,7 @@
 				TargetAttributes = {
 					31A2D7DA1DD8C91900F9394D = {
 						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = W6X8G863UY;
 						ProvisioningStyle = Automatic;
 					};
 					31A2D7EE1DD8C91A00F9394D = {
@@ -199,6 +203,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				31A2D8011DD8CCE800F9394D /* LocationSearchTable.swift in Sources */,
 				31A2D7E11DD8C91900F9394D /* ViewController.swift in Sources */,
 				31A2D7DF1DD8C91900F9394D /* AppDelegate.swift in Sources */,
 			);
@@ -337,6 +342,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = W6X8G863UY;
 				INFOPLIST_FILE = AppleMapB1/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sunny-juof.AppleMapB1";
@@ -349,6 +355,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = W6X8G863UY;
 				INFOPLIST_FILE = AppleMapB1/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sunny-juof.AppleMapB1";
@@ -404,6 +411,7 @@
 				31A2D7FA1DD8C91A00F9394D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		31A2D7FB1DD8C91A00F9394D /* Build configuration list for PBXNativeTarget "AppleMapB1Tests" */ = {
 			isa = XCConfigurationList;
@@ -412,6 +420,7 @@
 				31A2D7FD1DD8C91A00F9394D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
