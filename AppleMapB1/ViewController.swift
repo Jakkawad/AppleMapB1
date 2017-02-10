@@ -27,9 +27,41 @@ class ViewController: UIViewController, CLLocationManagerDelegate, HandleMapSear
     var newPin = MKPointAnnotation()
     var destinationLocation = MKPlacemark()
     
+    var viewStatus: Bool = false
+    var distanceInKM: Double = 0.0
+    
     var dropPin: Bool = false
     
+    // Outlet
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var lblArrival: UILabel!
+    @IBOutlet weak var lblTime: UILabel!
+    @IBOutlet weak var lblDistance: UILabel!
+    @IBOutlet weak var viewStart: UIView!
+    @IBOutlet weak var lblStart: UILabel!
+    
+    @IBAction func btnStart(_ sender: UITapGestureRecognizer) {
+        if viewStatus == false {
+            print("new pin is \(newPin)")
+            let newPinCoordinate = CLLocationCoordinate2D(latitude: newPin.coordinate.latitude, longitude: newPin.coordinate.longitude)
+            let newPinPoint = MKPlacemark(coordinate: newPinCoordinate)
+            getDirections(placemark: newPinPoint)
+            endDirections(status: true)
+            viewStatus = true
+        } else {
+            endDirections(status: false)
+            viewStatus = false
+            let overlays = mapView.overlays
+            mapView.removeOverlays(overlays)
+            mapView.removeAnnotation(newPin)
+            lblDistance.text = "0.0"
+        }
+//        print("new pin is \(newPin)")
+//        let newPinCoordinate = CLLocationCoordinate2D(latitude: newPin.coordinate.latitude, longitude: newPin.coordinate.longitude)
+//        let newPinPoint = MKPlacemark(coordinate: newPinCoordinate)
+//        getDirections(placemark: newPinPoint)
+//        endDirections(status: true)
+    }
     
     @IBAction func tapped(gestureReconizer: UILongPressGestureRecognizer) {
         let touchPoint = gestureReconizer.location(in: mapView)
@@ -62,51 +94,23 @@ class ViewController: UIViewController, CLLocationManagerDelegate, HandleMapSear
         }
     }
     
-    
-    func calculateSegmentDirections(index: Int) {
-//        let request: MKDirectionsRequest = MKDirectionsRequest()
-        
-    }
-    
-    func getDirections(){
-//        guard let selectedPin = selectedPin else { return }
-//        let mapItem = MKMapItem(placemark: selectedPin)
-//        let launchOptions = [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving]
-//        mapItem.openInMaps(launchOptions: launchOptions)
-        print("getDirections")
-        
-    }
-    
-    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView?{
-        if annotation is MKUserLocation {
-            //return nil so map view draws "blue dot" for standard user location
-            return nil
+    func endDirections(status: Bool) {
+        if status == false  {
+            viewStart.backgroundColor = UIColor.green
+            lblStart.text = "Start"
+        } else {
+            viewStart.backgroundColor = UIColor.red
+            lblStart.text = "End"
         }
-        let reuseId = "pin"
-        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
-        pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-        pinView?.pinTintColor = UIColor.orange
-        pinView?.canShowCallout = true
-        let smallSquare = CGSize(width: 30, height: 30)
-        let button = UIButton(frame: CGRect(origin: CGPoint.zero, size: smallSquare))
-        button.setBackgroundImage(UIImage(named: "car"), for: UIControlState())
-        button.addTarget(self, action: #selector(ViewController.getDirections), for: .touchUpInside)
-        pinView?.leftCalloutAccessoryView = button
-        
-        
-        return pinView
+//        viewStart.backgroundColor = UIColor.red
+//        lblStart.text = "End"
     }
     
-    func dropPinZoomIn(_ placemark: MKPlacemark){
-        
-        // cache the pin
-        selectedPin = placemark
-        // clear existing pins
-        mapView.removeAnnotations(mapView.annotations)
+    func getDirections(placemark: MKPlacemark) {
+        print("getDirections: \(placemark)")
         let annotation = MKPointAnnotation()
         annotation.coordinate = placemark.coordinate
         annotation.title = placemark.name
-        
 //        print("PlaceMark: \(placemark)")
         let sourcePlacemark = MKPlacemark(coordinate: sourceLocation, addressDictionary: nil)
 //        print("sourceLocation: \(sourcePlacemark)")
@@ -130,29 +134,100 @@ class ViewController: UIViewController, CLLocationManagerDelegate, HandleMapSear
         let directions = MKDirections(request: directionRequest)
         
         directions.calculate {
-            
             (response, error) -> Void in
-            
             guard let response = response else {
                 if let error = error {
                     print("Error: \(error)")
                 }
-                
                 return
             }
-            
             let route = response.routes[0]
 //            print("route: \(route)")
-            print(route.distance)
+//            print(route.steps)
+            self.lblDistance.text = "\(convertDistance(distance: route.distance))"
+//            self.lblDistance.text = "\(route.distance)"
             self.mapView.add((route.polyline), level: MKOverlayLevel.aboveRoads)
             
             let rect = route.polyline.boundingMapRect
 //            print("rect: \(rect)")
             self.mapView.setRegion(MKCoordinateRegionForMapRect(rect), animated: true)
         }
+    }
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView?{
+        if annotation is MKUserLocation {
+            //return nil so map view draws "blue dot" for standard user location
+            return nil
+        }
+        let reuseId = "pin"
+        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
+        pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+        pinView?.pinTintColor = UIColor.orange
+        pinView?.canShowCallout = true
+//        let smallSquare = CGSize(width: 30, height: 30)
+//        let button = UIButton(frame: CGRect(origin: CGPoint.zero, size: smallSquare))
+//        button.setBackgroundImage(UIImage(named: "car"), for: UIControlState())
+//        button.addTarget(self, action: #selector(ViewController.getDirections), for: .touchUpInside)
+//        pinView?.leftCalloutAccessoryView = button
+        return pinView
+    }
+    
+    func dropPinZoomIn(_ placemark: MKPlacemark){
+        // cache the pin
+        selectedPin = placemark
+        // clear existing pins
+        mapView.removeAnnotations(mapView.annotations)
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = placemark.coordinate
+        annotation.title = placemark.name
         
+////        print("PlaceMark: \(placemark)")
+//        let sourcePlacemark = MKPlacemark(coordinate: sourceLocation, addressDictionary: nil)
+////        print("sourceLocation: \(sourcePlacemark)")
+//        let sourceMapItem = MKMapItem(placemark: sourcePlacemark)
+////        print("sourcePlacemark: \(sourcePlacemark)")
+//        let sourceAnnotation = MKPointAnnotation()
+//        sourceAnnotation.title = "Times Square"
+//        let destinationMapItem = MKMapItem(placemark: placemark)
+////        print("destinationMapItem: \(destinationMapItem)")
+//        let directionRequest = MKDirectionsRequest()
+//        directionRequest.source = sourceMapItem
+//        directionRequest.destination = destinationMapItem
+//        directionRequest.transportType = .automobile
+//        if let location = sourcePlacemark.location {
+//            sourceAnnotation.coordinate = location.coordinate
+//        }
+//        if let city = placemark.locality,
+//            let state = placemark.administrativeArea {
+//            annotation.subtitle = "\(city) \(state)"
+//        }
+//        let directions = MKDirections(request: directionRequest)
+//        
+//        directions.calculate {
+//            
+//            (response, error) -> Void in
+//            
+//            guard let response = response else {
+//                if let error = error {
+//                    print("Error: \(error)")
+//                }
+//                
+//                return
+//            }
+//            
+//            let route = response.routes[0]
+////            print("route: \(route)")
+//            print(route.distance)
+//            self.mapView.add((route.polyline), level: MKOverlayLevel.aboveRoads)
+//            
+//            let rect = route.polyline.boundingMapRect
+////            print("rect: \(rect)")
+//            self.mapView.setRegion(MKCoordinateRegionForMapRect(rect), animated: true)
+//        }
+//        
+        // Set Camera to destination location
         mapView.addAnnotation(annotation)
-        let span = MKCoordinateSpanMake(0.03, 0.03)
+        let span = MKCoordinateSpanMake(0.30, 0.30)
         let region = MKCoordinateRegionMake(placemark.coordinate, span)
         mapView.setRegion(region, animated: true)
     }
@@ -192,6 +267,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, HandleMapSear
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Status view
+        lblDistance.text = "0.0"
+        lblTime.text = "15"
+        lblArrival.text = "12.59"
+        
+        // MapView
         mapView.showsCompass = false
         mapView.showsUserLocation = true
         

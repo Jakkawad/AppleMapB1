@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		315B004D1E4E283200A1CCBA /* GenaralClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315B004C1E4E283200A1CCBA /* GenaralClass.swift */; };
 		31A2D7DF1DD8C91900F9394D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A2D7DE1DD8C91900F9394D /* AppDelegate.swift */; };
 		31A2D7E11DD8C91900F9394D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A2D7E01DD8C91900F9394D /* ViewController.swift */; };
 		31A2D7E41DD8C91900F9394D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31A2D7E21DD8C91900F9394D /* Main.storyboard */; };
@@ -27,6 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		315B004C1E4E283200A1CCBA /* GenaralClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenaralClass.swift; sourceTree = "<group>"; };
 		31A2D7DB1DD8C91900F9394D /* AppleMapB1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppleMapB1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		31A2D7DE1DD8C91900F9394D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		31A2D7E01DD8C91900F9394D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -82,6 +84,7 @@
 				31A2D7DE1DD8C91900F9394D /* AppDelegate.swift */,
 				31A2D7E01DD8C91900F9394D /* ViewController.swift */,
 				31A2D8001DD8CCE800F9394D /* LocationSearchTable.swift */,
+				315B004C1E4E283200A1CCBA /* GenaralClass.swift */,
 				31A2D7E21DD8C91900F9394D /* Main.storyboard */,
 				31A2D7E51DD8C91900F9394D /* Assets.xcassets */,
 				31A2D7E71DD8C91900F9394D /* LaunchScreen.storyboard */,
@@ -204,6 +207,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				31A2D8011DD8CCE800F9394D /* LocationSearchTable.swift in Sources */,
+				315B004D1E4E283200A1CCBA /* GenaralClass.swift in Sources */,
 				31A2D7E11DD8C91900F9394D /* ViewController.swift in Sources */,
 				31A2D7DF1DD8C91900F9394D /* AppDelegate.swift in Sources */,
 			);
