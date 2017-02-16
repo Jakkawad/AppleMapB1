@@ -15,6 +15,8 @@
 		31A2D7E91DD8C91900F9394D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31A2D7E71DD8C91900F9394D /* LaunchScreen.storyboard */; };
 		31A2D7F41DD8C91A00F9394D /* AppleMapB1Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A2D7F31DD8C91A00F9394D /* AppleMapB1Tests.swift */; };
 		31A2D8011DD8CCE800F9394D /* LocationSearchTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A2D8001DD8CCE800F9394D /* LocationSearchTable.swift */; };
+		31C988191E560A8500083ADD /* location-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 31C988171E560A8500083ADD /* location-arrow.png */; };
+		31C9881A1E560A8500083ADD /* location.png in Resources */ = {isa = PBXBuildFile; fileRef = 31C988181E560A8500083ADD /* location.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +42,8 @@
 		31A2D7F31DD8C91A00F9394D /* AppleMapB1Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleMapB1Tests.swift; sourceTree = "<group>"; };
 		31A2D7F51DD8C91A00F9394D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		31A2D8001DD8CCE800F9394D /* LocationSearchTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationSearchTable.swift; sourceTree = "<group>"; };
+		31C988171E560A8500083ADD /* location-arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "location-arrow.png"; sourceTree = "<group>"; };
+		31C988181E560A8500083ADD /* location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = location.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +89,7 @@
 				31A2D7E01DD8C91900F9394D /* ViewController.swift */,
 				31A2D8001DD8CCE800F9394D /* LocationSearchTable.swift */,
 				315B004C1E4E283200A1CCBA /* GenaralClass.swift */,
+				31C9881B1E56146D00083ADD /* Image */,
 				31A2D7E21DD8C91900F9394D /* Main.storyboard */,
 				31A2D7E51DD8C91900F9394D /* Assets.xcassets */,
 				31A2D7E71DD8C91900F9394D /* LaunchScreen.storyboard */,
@@ -100,6 +105,15 @@
 				31A2D7F51DD8C91A00F9394D /* Info.plist */,
 			);
 			path = AppleMapB1Tests;
+			sourceTree = "<group>";
+		};
+		31C9881B1E56146D00083ADD /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				31C988171E560A8500083ADD /* location-arrow.png */,
+				31C988181E560A8500083ADD /* location.png */,
+			);
+			name = Image;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -188,6 +202,8 @@
 			files = (
 				31A2D7E91DD8C91900F9394D /* LaunchScreen.storyboard in Resources */,
 				31A2D7E61DD8C91900F9394D /* Assets.xcassets in Resources */,
+				31C9881A1E560A8500083ADD /* location.png in Resources */,
+				31C988191E560A8500083ADD /* location-arrow.png in Resources */,
 				31A2D7E41DD8C91900F9394D /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

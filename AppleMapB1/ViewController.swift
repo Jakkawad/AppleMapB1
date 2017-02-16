@@ -27,6 +27,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, HandleMapSear
     var newPin = MKPointAnnotation()
     var destinationLocation = MKPlacemark()
     
+    var workingFuction: Bool = false
+    
+    var distanceToDestination: Double = 0.0
+    var didSelectLocation: Bool = false
+    
+    var updateLocation: Bool = true
+    
     var viewStatus: Bool = false
     var distanceInKM: Double = 0.0
     
@@ -39,28 +46,49 @@ class ViewController: UIViewController, CLLocationManagerDelegate, HandleMapSear
     @IBOutlet weak var lblDistance: UILabel!
     @IBOutlet weak var viewStart: UIView!
     @IBOutlet weak var lblStart: UILabel!
+    @IBOutlet weak var imageViewStartUpdate: UIImageView!
+    
+    @IBAction func btnStartUpdateLocation(_ sender: UITapGestureRecognizer) {
+        changeImageArrow()
+        
+    }
     
     @IBAction func btnStart(_ sender: UITapGestureRecognizer) {
-        if viewStatus == false {
-            print("new pin is \(newPin)")
-            let newPinCoordinate = CLLocationCoordinate2D(latitude: newPin.coordinate.latitude, longitude: newPin.coordinate.longitude)
-            let newPinPoint = MKPlacemark(coordinate: newPinCoordinate)
-            getDirections(placemark: newPinPoint)
-            endDirections(status: true)
-            viewStatus = true
+        if didSelectLocation {
+            print("true")
+            if viewStatus == false {
+                print("new pin is \(newPin)")
+                let newPinCoordinate = CLLocationCoordinate2D(latitude: newPin.coordinate.latitude, longitude: newPin.coordinate.longitude)
+                let newPinPoint = MKPlacemark(coordinate: newPinCoordinate)
+                getDirections(placemark: newPinPoint)
+                endDirections(status: true)
+                viewStatus = true
+                workingFuction = true
+            } else {
+                endDirections(status: false)
+                viewStatus = false
+                let overlays = mapView.overlays
+                mapView.removeOverlays(overlays)
+                mapView.removeAnnotation(newPin)
+                lblDistance.text = "0.0"
+                workingFuction = false
+                didSelectLocation = false
+                if updateLocation {
+                    
+                } else {
+                    updateLocation = false
+                    changeImageArrow()
+                }
+            }
         } else {
-            endDirections(status: false)
-            viewStatus = false
-            let overlays = mapView.overlays
-            mapView.removeOverlays(overlays)
-            mapView.removeAnnotation(newPin)
-            lblDistance.text = "0.0"
+            print("false")
+            let pinAlert = UIAlertController(title: "Pin not found.", message: "please select destination.", preferredStyle: UIAlertControllerStyle.alert)
+            
+            pinAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
+//                print("Handle Ok logic here")
+            }))
+            present(pinAlert, animated: true, completion: nil)
         }
-//        print("new pin is \(newPin)")
-//        let newPinCoordinate = CLLocationCoordinate2D(latitude: newPin.coordinate.latitude, longitude: newPin.coordinate.longitude)
-//        let newPinPoint = MKPlacemark(coordinate: newPinCoordinate)
-//        getDirections(placemark: newPinPoint)
-//        endDirections(status: true)
     }
     
     @IBAction func tapped(gestureReconizer: UILongPressGestureRecognizer) {
@@ -89,8 +117,40 @@ class ViewController: UIViewController, CLLocationManagerDelegate, HandleMapSear
                 mapView.addAnnotation(newPin)
                 annotation.title = "\(annotation)"
             }
+            didSelectLocation = true
         } else {
 //            print("tapped end")
+        }
+    }
+    
+    func updateDistance() {
+        if didSelectLocation {
+            let twoDecimalPlaces = String(format: "%.2f", distanceToDestination)
+            let tw = Double(twoDecimalPlaces)!
+            print("tw: \(tw)")
+            if tw < 1.1 {
+                workingFuction = false
+//                let pinAlert = UIAlertController(title: "Weak Up!!!", message: "your in place", preferredStyle: UIAlertControllerStyle.alert)
+                
+//                pinAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
+//                print("Handle Ok logic here")
+//                }))
+//                present(pinAlert, animated: true, completion: nil)
+            }
+//            2.65456916482402
+            if viewStatus {
+                lblDistance.text = "\(twoDecimalPlaces)"
+            }
+        }
+    }
+    
+    func changeImageArrow() {
+        if updateLocation {
+            updateLocation = false
+            imageViewStartUpdate.image = UIImage(named: "location")
+        } else {
+            updateLocation = true
+            imageViewStartUpdate.image = UIImage(named: "location-arrow")
         }
     }
     
@@ -101,12 +161,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, HandleMapSear
         } else {
             viewStart.backgroundColor = UIColor.red
             lblStart.text = "End"
+            changeImageArrow()
         }
-//        viewStart.backgroundColor = UIColor.red
-//        lblStart.text = "End"
     }
     
     func getDirections(placemark: MKPlacemark) {
+        updateLocation = false
+        changeImageArrow()
         print("getDirections: \(placemark)")
         let annotation = MKPointAnnotation()
         annotation.coordinate = placemark.coordinate
@@ -142,14 +203,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, HandleMapSear
                 return
             }
             let route = response.routes[0]
-//            print("route: \(route)")
-//            print(route.steps)
-            self.lblDistance.text = "\(convertDistance(distance: route.distance))"
-//            self.lblDistance.text = "\(route.distance)"
             self.mapView.add((route.polyline), level: MKOverlayLevel.aboveRoads)
             
             let rect = route.polyline.boundingMapRect
-//            print("rect: \(rect)")
             self.mapView.setRegion(MKCoordinateRegionForMapRect(rect), animated: true)
         }
     }
@@ -180,51 +236,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, HandleMapSear
         let annotation = MKPointAnnotation()
         annotation.coordinate = placemark.coordinate
         annotation.title = placemark.name
-        
-////        print("PlaceMark: \(placemark)")
-//        let sourcePlacemark = MKPlacemark(coordinate: sourceLocation, addressDictionary: nil)
-////        print("sourceLocation: \(sourcePlacemark)")
-//        let sourceMapItem = MKMapItem(placemark: sourcePlacemark)
-////        print("sourcePlacemark: \(sourcePlacemark)")
-//        let sourceAnnotation = MKPointAnnotation()
-//        sourceAnnotation.title = "Times Square"
-//        let destinationMapItem = MKMapItem(placemark: placemark)
-////        print("destinationMapItem: \(destinationMapItem)")
-//        let directionRequest = MKDirectionsRequest()
-//        directionRequest.source = sourceMapItem
-//        directionRequest.destination = destinationMapItem
-//        directionRequest.transportType = .automobile
-//        if let location = sourcePlacemark.location {
-//            sourceAnnotation.coordinate = location.coordinate
-//        }
-//        if let city = placemark.locality,
-//            let state = placemark.administrativeArea {
-//            annotation.subtitle = "\(city) \(state)"
-//        }
-//        let directions = MKDirections(request: directionRequest)
-//        
-//        directions.calculate {
-//            
-//            (response, error) -> Void in
-//            
-//            guard let response = response else {
-//                if let error = error {
-//                    print("Error: \(error)")
-//                }
-//                
-//                return
-//            }
-//            
-//            let route = response.routes[0]
-////            print("route: \(route)")
-//            print(route.distance)
-//            self.mapView.add((route.polyline), level: MKOverlayLevel.aboveRoads)
-//            
-//            let rect = route.polyline.boundingMapRect
-////            print("rect: \(rect)")
-//            self.mapView.setRegion(MKCoordinateRegionForMapRect(rect), animated: true)
-//        }
-//        
+
         // Set Camera to destination location
         mapView.addAnnotation(annotation)
         let span = MKCoordinateSpanMake(0.30, 0.30)
@@ -239,18 +251,28 @@ class ViewController: UIViewController, CLLocationManagerDelegate, HandleMapSear
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if updateLocation {
+            if let location = locations.first {
+                let span = MKCoordinateSpanMake(0.05, 0.05)
+                let region = MKCoordinateRegion(center: location.coordinate, span: span)
+                mapView.setRegion(region, animated: true)
+            }
+        } else {
+            
+        }
         if let location = locations.first {
 //            print("location: \(location)")
             sourceLocation = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
 //            print("source: \(sourceLocation)")
 //            currentLocation = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.latitude)
 //            print("currentLocation: \(currentLocation)")
-            let span = MKCoordinateSpanMake(0.05, 0.05)
-            let region = MKCoordinateRegion(center: location.coordinate, span: span)
-            mapView.setRegion(region, animated: true)
-            
+//            let span = MKCoordinateSpanMake(0.05, 0.05)
+//            let region = MKCoordinateRegion(center: location.coordinate, span: span)
+//            mapView.setRegion(region, animated: true)
+            distanceToDestination = getBetweenPoint(p1Lati: newPin.coordinate.latitude, p1Long: newPin.coordinate.longitude, p2Lati: sourceLocation.latitude, p2Long: sourceLocation.longitude)
+            updateDistance()
         }
-        
+//        print("didUpdateLocations")
     }
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
@@ -266,7 +288,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, HandleMapSear
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+//        print("newPin: \(newPin.coordinate.latitude)")
         // Status view
         lblDistance.text = "0.0"
         lblTime.text = "15"
@@ -281,6 +304,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, HandleMapSear
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         locationManager.requestLocation()
+        locationManager.startUpdatingLocation()
         
         // SearchTable
         let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationSearchTable

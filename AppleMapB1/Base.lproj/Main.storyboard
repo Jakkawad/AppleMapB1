@@ -106,13 +106,42 @@
                                     <constraint firstAttribute="bottom" secondItem="INS-yW-rPu" secondAttribute="bottom" constant="16" id="diB-cw-Fa0"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OM6-D9-WZX">
+                                <rect key="frame" x="326" y="77" width="40" height="40"/>
+                                <subviews>
+                                    <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="location-arrow.png" translatesAutoresizingMaskIntoConstraints="NO" id="faH-HF-CNK">
+                                        <rect key="frame" x="5" y="5" width="30" height="30"/>
+                                        <gestureRecognizers/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="faH-HF-CNK" secondAttribute="height" multiplier="1:1" id="Pni-vB-lF4"/>
+                                            <constraint firstAttribute="height" constant="30" id="QxE-49-G8W"/>
+                                            <constraint firstAttribute="width" constant="30" id="q5z-dL-7X2"/>
+                                        </constraints>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="b4C-54-D4A" appends="YES" id="spL-cl-qD8"/>
+                                        </connections>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="faH-HF-CNK" secondAttribute="bottom" constant="5" id="1W8-Fg-P8L"/>
+                                    <constraint firstAttribute="height" constant="40" id="CWE-ik-B5e"/>
+                                    <constraint firstItem="faH-HF-CNK" firstAttribute="top" secondItem="OM6-D9-WZX" secondAttribute="top" constant="5" id="Gze-g5-pC0"/>
+                                    <constraint firstItem="faH-HF-CNK" firstAttribute="leading" secondItem="OM6-D9-WZX" secondAttribute="leading" constant="5" id="IUB-4N-fSY"/>
+                                    <constraint firstAttribute="trailing" secondItem="faH-HF-CNK" secondAttribute="trailing" constant="5" id="bPu-AR-oeI"/>
+                                    <constraint firstAttribute="width" constant="40" id="edd-aP-tPO"/>
+                                    <constraint firstAttribute="width" secondItem="OM6-D9-WZX" secondAttribute="height" multiplier="1:1" id="kcT-mb-Pfe"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="OM6-D9-WZX" secondAttribute="trailing" constant="9" id="2q6-0n-Gdp"/>
                             <constraint firstItem="B2S-XQ-i9k" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="CEk-Lx-a9o"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="B2S-XQ-i9k" secondAttribute="bottom" id="DKq-e6-gBo"/>
                             <constraint firstAttribute="trailing" secondItem="1VZ-b6-fIH" secondAttribute="trailing" id="LnS-nd-Srt"/>
                             <constraint firstItem="B2S-XQ-i9k" firstAttribute="top" secondItem="1VZ-b6-fIH" secondAttribute="bottom" id="NXA-Lg-Vz5"/>
+                            <constraint firstItem="OM6-D9-WZX" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="13" id="QRH-mJ-KGw"/>
                             <constraint firstAttribute="trailing" secondItem="B2S-XQ-i9k" secondAttribute="trailing" id="Xsh-ux-svE"/>
                             <constraint firstItem="1VZ-b6-fIH" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="oUP-SE-iFt"/>
                             <constraint firstItem="1VZ-b6-fIH" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="zJ5-te-3hS"/>
@@ -120,6 +149,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="qLs-kY-4uB"/>
                     <connections>
+                        <outlet property="imageViewStartUpdate" destination="faH-HF-CNK" id="jeM-B3-Jt5"/>
                         <outlet property="lblArrival" destination="j4t-cF-zx4" id="gbe-dX-yMB"/>
                         <outlet property="lblDistance" destination="2b4-db-pmA" id="Bd8-v5-cvk"/>
                         <outlet property="lblStart" destination="5Se-qb-Vtx" id="eJ3-eU-PO6"/>
@@ -138,6 +168,13 @@
                 <tapGestureRecognizer id="PSQ-0Q-VJO">
                     <connections>
                         <action selector="btnStart:" destination="BYZ-38-t0r" id="z4I-xC-6fE"/>
+                        <outlet property="delegate" destination="BYZ-38-t0r" id="KjE-e9-OI7"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="b4C-54-D4A">
+                    <connections>
+                        <action selector="btnStartUpdateLocation:" destination="BYZ-38-t0r" id="EPd-cl-Ecx"/>
+                        <outlet property="delegate" destination="BYZ-38-t0r" id="4HJ-et-LcG"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
@@ -206,4 +243,7 @@
             <point key="canvasLocation" x="1761" y="136"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="location-arrow.png" width="32" height="32"/>
+    </resources>
 </document>
