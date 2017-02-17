@@ -20,15 +20,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, HandleMapSear
     var resultSearchController: UISearchController!
     let locationManager = CLLocationManager()
     
-    var currentLocation = CLLocationCoordinate2D()
+    var currentLocation = CLLocation()
     var sourceLocation = CLLocationCoordinate2D()
     var pinLocation = MKPointAnnotation()
     var oldPin = MKPointAnnotation()
     var newPin = MKPointAnnotation()
     var destinationLocation = MKPlacemark()
     
-    var speedOnWay: Double = 0.0
-    var isWoring: Bool = false
+    var workingFuction: Bool = false
     
     var distanceToDestination: Double = 0.0
     var didSelectLocation: Bool = false
@@ -56,7 +55,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, HandleMapSear
     
     @IBAction func btnStart(_ sender: UITapGestureRecognizer) {
         if didSelectLocation {
-//            print("true")
+            print("true")
             if viewStatus == false {
                 print("new pin is \(newPin)")
                 let newPinCoordinate = CLLocationCoordinate2D(latitude: newPin.coordinate.latitude, longitude: newPin.coordinate.longitude)
@@ -64,10 +63,22 @@ class ViewController: UIViewController, CLLocationManagerDelegate, HandleMapSear
                 getDirections(placemark: newPinPoint)
                 endDirections(status: true)
                 viewStatus = true
-//                isWoring = true
+                workingFuction = true
             } else {
                 endDirections(status: false)
-                
+                viewStatus = false
+                let overlays = mapView.overlays
+                mapView.removeOverlays(overlays)
+                mapView.removeAnnotation(newPin)
+                lblDistance.text = "0.0"
+                workingFuction = false
+                didSelectLocation = false
+                if updateLocation {
+                    
+                } else {
+                    updateLocation = false
+                    changeImageArrow()
+                }
             }
         } else {
             print("false")
@@ -116,20 +127,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate, HandleMapSear
         if didSelectLocation {
             let twoDecimalPlaces = String(format: "%.2f", distanceToDestination)
             let tw = Double(twoDecimalPlaces)!
-//            print("tw: \(tw)")
-            if tw < 1.5 {
-                endDirections(status: false)
-                let pinAlert = UIAlertController(title: "Weak Up!!!", message: "your in place", preferredStyle: UIAlertControllerStyle.alert)
+            print("tw: \(tw)")
+            if tw < 1.1 {
+                workingFuction = false
+//                let pinAlert = UIAlertController(title: "Weak Up!!!", message: "your in place", preferredStyle: UIAlertControllerStyle.alert)
                 
-                pinAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
+//                pinAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
 //                print("Handle Ok logic here")
-                }))
-                present(pinAlert, animated: true, completion: nil)
+//                }))
+//                present(pinAlert, animated: true, completion: nil)
             }
 //            2.65456916482402
             if viewStatus {
                 lblDistance.text = "\(twoDecimalPlaces)"
-                lblArrival.text = "\(speedOnWay)"
             }
         }
     }
@@ -148,24 +158,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, HandleMapSear
         if status == false  {
             viewStart.backgroundColor = UIColor.green
             lblStart.text = "Start"
-            viewStatus = false
-            let overlays = mapView.overlays
-            mapView.removeOverlays(overlays)
-            mapView.removeAnnotation(newPin)
-            lblDistance.text = "0.0"
-//            isWoring = false
-            didSelectLocation = false
-            if updateLocation {
-                
-            } else {
-                updateLocation = false
-                changeImageArrow()
-            }
         } else {
             viewStart.backgroundColor = UIColor.red
             lblStart.text = "End"
             changeImageArrow()
-//            isWoring = true
         }
     }
     
@@ -182,7 +178,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, HandleMapSear
         let sourceMapItem = MKMapItem(placemark: sourcePlacemark)
 //        print("sourcePlacemark: \(sourcePlacemark)")
         let sourceAnnotation = MKPointAnnotation()
-//        sourceAnnotation.title = "Times Square"
+        sourceAnnotation.title = "Times Square"
         let destinationMapItem = MKMapItem(placemark: placemark)
 //        print("destinationMapItem: \(destinationMapItem)")
         let directionRequest = MKDirectionsRequest()
@@ -208,7 +204,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, HandleMapSear
             }
             let route = response.routes[0]
             self.mapView.add((route.polyline), level: MKOverlayLevel.aboveRoads)
-//            print("time: \(route.expectedTravelTime)")
+            
             let rect = route.polyline.boundingMapRect
             self.mapView.setRegion(MKCoordinateRegionForMapRect(rect), animated: true)
         }
@@ -265,14 +261,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, HandleMapSear
             
         }
         if let location = locations.first {
-//            print("location: \(location.speed)")
-            
-            speedOnWay = location.speed
-//            sourceLocation = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+//            print("location: \(location)")
+            sourceLocation = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
 //            print("source: \(sourceLocation)")
-//            let sourcePlacemark = MKPlacemark(coordinate: sourceLocation, addressDictionary: nil)
-//                    print("sourceLocation: \(sourcePlacemark)")
-//            let sourcePlaceMark
 //            currentLocation = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.latitude)
 //            print("currentLocation: \(currentLocation)")
 //            let span = MKCoordinateSpanMake(0.05, 0.05)
@@ -302,7 +293,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, HandleMapSear
         // Status view
         lblDistance.text = "0.0"
         lblTime.text = "15"
-        lblArrival.text = "0.0"
+        lblArrival.text = "12.59"
         
         // MapView
         mapView.showsCompass = false
